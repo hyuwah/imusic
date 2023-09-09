@@ -24,16 +24,13 @@ import androidx.compose.ui.unit.dp
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import dev.hyuwah.imusic.R
+import dev.hyuwah.imusic.features.search.domain.model.SearchModel
 import dev.hyuwah.imusic.ui.theme.IMusicTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchResultItem(
-    thumbnailUrl: String,
-    artistName: String,
-    trackName: String,
-    collectionName: String,
-    releaseDate: String,
+    model: SearchModel,
     isPlaying: Boolean,
     onClicked: () -> Unit
 ) {
@@ -59,7 +56,7 @@ fun SearchResultItem(
             CoilImage(
                 modifier = Modifier.size(100.dp),
                 imageModel = {
-                    thumbnailUrl
+                    model.artworkUrl100
                 },
                 imageOptions = ImageOptions(contentScale = ContentScale.FillBounds),
                 previewPlaceholder = R.drawable.genres
@@ -70,7 +67,7 @@ fun SearchResultItem(
                 verticalArrangement = Arrangement.SpaceAround
             ) {
                 Text(
-                    text = trackName,
+                    text = model.trackName,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp, bottom = 6.dp),
@@ -78,7 +75,7 @@ fun SearchResultItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = artistName,
+                    text = model.artistName,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier
@@ -87,7 +84,7 @@ fun SearchResultItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = collectionName,
+                    text = model.collectionName,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -95,7 +92,7 @@ fun SearchResultItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = releaseDate,
+                    text = model.releaseDate,
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.Gray,
                     modifier = Modifier
@@ -112,11 +109,13 @@ fun SearchResultItem(
 fun previewSearchResultItem() {
     IMusicTheme {
         SearchResultItem(
-            thumbnailUrl = "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/d0/b9/52/d0b9528d-c044-1c33-08ed-0913d8deedb6/05099924385657.jpg/100x100bb.jpg",
-            artistName = "Artist",
-            trackName = "Track Name",
-            collectionName = "Album Name",
-            releaseDate = "2022",
+            model = SearchModel.default().copy(
+                artworkUrl100 = "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/d0/b9/52/d0b9528d-c044-1c33-08ed-0913d8deedb6/05099924385657.jpg/100x100bb.jpg",
+                artistName = "Artist",
+                trackName = "Track Name",
+                collectionName = "Album Name",
+                releaseDate = "2022",
+            ),
             isPlaying = true
         ) {
 

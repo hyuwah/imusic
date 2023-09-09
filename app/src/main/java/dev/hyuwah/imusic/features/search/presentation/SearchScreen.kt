@@ -34,6 +34,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.hyuwah.imusic.core.common.domain.model.ErrorType
+import dev.hyuwah.imusic.features.search.domain.model.SearchModel
+import dev.hyuwah.imusic.features.search.domain.model.SearchResultModel
 import dev.hyuwah.imusic.features.search.presentation.component.SearchResultItem
 import dev.hyuwah.imusic.ui.theme.IMusicTheme
 
@@ -113,7 +115,9 @@ fun SearchScreen(
                     when {
                         isLoading == true -> {
                             CircularProgressIndicator(
-                                modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center)
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .wrapContentSize(Alignment.Center)
                             )
                         }
 
@@ -132,11 +136,7 @@ fun SearchScreen(
                                 ) {
                                     items(searchResults, key = { it.hashCode() }) { model ->
                                         SearchResultItem(
-                                            thumbnailUrl = model.artworkUrl100,
-                                            artistName = model.artistName,
-                                            trackName = model.trackName,
-                                            collectionName = model.collectionName,
-                                            releaseDate = model.releaseDate,
+                                            model = model,
                                             isPlaying = selectedTrack == model
                                         ) {
                                             onEvent(SearchScreenEvent.OnTrackSelected(model))
@@ -183,7 +183,28 @@ fun previewSearchScreen() {
     IMusicTheme {
         SearchScreen(
             onEvent = {},
-            state = SearchScreenState()
+            state = SearchScreenState(
+                isLoading = false,
+                searchResult = SearchResultModel(
+                    2,
+                    listOf(
+                        SearchModel.default().copy(
+                            artworkUrl100 = "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/d0/b9/52/d0b9528d-c044-1c33-08ed-0913d8deedb6/05099924385657.jpg/100x100bb.jpg",
+                            artistName = "Artist",
+                            trackName = "Track Name 1",
+                            collectionName = "Album Name",
+                            releaseDate = "2022",
+                        ),
+                        SearchModel.default().copy(
+                            artworkUrl100 = "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/d0/b9/52/d0b9528d-c044-1c33-08ed-0913d8deedb6/05099924385657.jpg/100x100bb.jpg",
+                            artistName = "Artist",
+                            trackName = "Track Name 2",
+                            collectionName = "Album Name",
+                            releaseDate = "2023",
+                        )
+                    )
+                )
+            )
         )
     }
 }

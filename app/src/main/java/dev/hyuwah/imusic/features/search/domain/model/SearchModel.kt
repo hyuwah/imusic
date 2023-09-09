@@ -16,4 +16,26 @@ data class SearchModel(
     val trackTimeMillis: Int?,
     val trackViewUrl: String,
     val wrapperType: SearchWrapperType
-)
+) {
+    companion object {
+        fun default(): SearchModel {
+            return SearchModel(
+                -1,
+                "",
+                "",
+                "",
+                "",
+                "",
+                false,
+                "",
+                "",
+                -1,
+                "",
+                -1,
+                null,
+                "",
+                SearchWrapperType.UNKNOWN
+            )
+        }
+    }
+}
