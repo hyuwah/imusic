@@ -8,18 +8,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.hyuwah.imusic.core.common.domain.model.AsyncResult
+import dev.hyuwah.imusic.features.search.domain.model.PlayerState
+import dev.hyuwah.imusic.features.search.domain.model.TrackPlaybackState
+import dev.hyuwah.imusic.features.search.domain.usecase.PlaybackControllerUseCase
 import dev.hyuwah.imusic.features.search.domain.usecase.SearchMusicUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val searchMusicUseCase: SearchMusicUseCase,
+    private val playbackControllerUseCase: PlaybackControllerUseCase
 ) : ViewModel() {
 
     var screenState by mutableStateOf(SearchScreenState())
         private set
+
+    var trackPlaybackState by mutableStateOf(TrackPlaybackState())
+        private set
+
+    init {
+        setMediaControllerCallback()
+    }
 
     fun onEvent(event: SearchScreenEvent) {
         when (event) {
@@ -31,15 +44,19 @@ class SearchViewModel @Inject constructor(
             }
 
             SearchScreenEvent.PauseTrack -> {
-                // Call usecase
+                playbackControllerUseCase.pauseTrack()
             }
 
-            SearchScreenEvent.PlayTrack -> {
-                // Call usecase
+            is SearchScreenEvent.PlayTrack -> {
+                playbackControllerUseCase.playTrack(event.selectedTrack)
             }
 
             SearchScreenEvent.ResumeTrack -> {
-                // Call usecase
+                playbackControllerUseCase.resumeTrack()
+            }
+
+            is SearchScreenEvent.SeekTrackPosition -> {
+                playbackControllerUseCase.seekTrackPosition(event.pos)
             }
         }
     }
@@ -62,6 +79,39 @@ class SearchViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun setMediaControllerCallback() {
+        playbackControllerUseCase.setMediaControllerCallback { playerState, currentTrack, currentPosition, totalDuration ->
+            trackPlaybackState = trackPlaybackState.copy(
+                playerState = playerState,
+                currentTrack = currentTrack,
+                currentPosition = currentPosition,
+                totalDuration = totalDuration
+            )
+
+            when (playerState) {
+                PlayerState.PLAYING -> {
+                    viewModelScope.launch {
+                        while (true) {
+                            delay(1.seconds)
+                            trackPlaybackState = trackPlaybackState.copy(
+                                currentPosition = playbackControllerUseCase.getCurrentTrackPosition()
+                            )
+                        }
+                    }
+                }
+                PlayerState.STOPPED -> {
+                    screenState = screenState.copy(selectedTrack = null)
+                }
+                PlayerState.PAUSED -> {}
+            }
+
+        }
+    }
+
+    fun destroyMediaController() {
+        playbackControllerUseCase.destroyMediaController()
     }
 
 }
