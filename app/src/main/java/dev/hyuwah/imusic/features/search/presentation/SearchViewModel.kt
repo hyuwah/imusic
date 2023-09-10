@@ -110,8 +110,14 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun destroyMediaController() {
+    private fun destroyMediaController() {
         playbackControllerUseCase.destroyMediaController()
+    }
+
+    override fun onCleared() {
+        destroyMediaController()
+        super.onCleared()
+
     }
 
 }
