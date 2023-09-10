@@ -10,17 +10,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.0.0
-      # Decrypt release keystore and release properties file from github secrets
-      - name: Decrypt files
+        # Decrypt release keystore and release properties file from github secrets
+      - name: Decrypt files 
         id: decrypt_files
         run: |
-        # Creating encrypted keystore file from secret saved on GitHub
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.asc
-        # Decrypting keystore from passphrase(saved as secret) used earlier for encryption
+          # Creating encrypted keystore file from secret saved on GitHub
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.asc 
+          # Decrypting keystore from passphrase(saved as secret) used earlier for encryption
           gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_DECRYPT_PASSPHRASE }}" --batch release.jks.asc > config/release_keystore.jks
-        # Creating encrypted play service account file from saved secret.
+          # Creating encrypted play service account file from saved secret.
           echo "${{ secrets.PLAY_SERVICE_ACCOUNT}}" > api-7730997362032805480-382486-3308f76b1b64.json.asc
-        # Decrypting play service account with passphrase(saved as secret) used earlier for encryption
+          # Decrypting play service account with passphrase(saved as secret) used earlier for encryption
           gpg -d --passphrase "${{ secrets.PLAY_SERVICE_ACCOUNT_DECRYPT_PASSPHRASE }}" --batch api-7730997362032805480-382486-3308f76b1b64.json.asc > config/api-7730997362032805480-382486-3308f76b1b64.json
       - name: Setup Java JDK
         uses: actions/setup-java@v3.12.0
