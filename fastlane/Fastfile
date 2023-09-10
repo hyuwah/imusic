@@ -42,7 +42,7 @@ platform :android do
       build_type: 'Release',
       print_command: true,
       properties: {
-        "android.injected.signing.store.file" => "config/release_keystore.jks",
+        "android.injected.signing.store.file" => "../config/release_keystore.jks",
         "android.injected.signing.store.password" => ENV['KEYSTORE_STORE_PASSWORD'],
         "android.injected.signing.key.alias" => ENV['KEYSTORE_KEY_ALIAS'],
         "android.injected.signing.key.password" => ENV['KEYSTORE_KEY_PASSWORD'],
