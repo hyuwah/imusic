@@ -45,29 +45,32 @@ jobs:
           java-version: 17.0.6+10
           distribution: adopt
           cache: gradle
-          
-      # - name: Build with Gradle
-      #   run: ./gradlew build
-      # - name: Upload a Build Artifact
-      #   uses: actions/upload-artifact@v3.1.3
-      #   with:
-      #     name: app
-      #     path: app/build/outputs/apk/debug/app-debug.apk
 
-#      - name: Test fastlane
-#        id: test_fastlane
-#        run: |
-#          bundle exec fastlane run validate_play_store_json_key json_key:config/api-7730997362032805480-382486-3308f76b1b64.json
+      # Validate service account json on fastlane
+      - name: Test fastlane
+        id: test_fastlane
+        run: |
+          bundle exec fastlane run validate_play_store_json_key json_key:config/api-7730997362032805480-382486-3308f76b1b64.json
 
       # Run Unit Test
-#      - name: Run unit tests
-#        id: run_unit_tests
-#        run: |
-#          ./gradlew testDebugUnitTest
-
-      - name: Upload to internal app sharing
-        id: internal_app_share
+      - name: Run unit tests
+        id: run_unit_tests
         run: |
-          bundle exec fastlane upload_playstore_internal
+          ./gradlew testDebugUnitTest
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.3
+        with:
+          name: app
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      # Assemble AAB and upload to playstore internal sharing
+#      - name: Upload to internal app sharing
+#        id: internal_app_share
+#        run: |
+#          bundle exec fastlane upload_playstore_internal
 
       
