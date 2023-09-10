@@ -1,7 +1,7 @@
 name: Android CI
 on:
   push:
-    branches: [ master ]
+    branches: [ research/devops ]
   pull_request:
     branches: [ master ]
 jobs:
@@ -22,16 +22,43 @@ jobs:
           echo "${{ secrets.PLAY_SERVICE_ACCOUNT}}" > api-7730997362032805480-382486-3308f76b1b64.json.asc
           # Decrypting play service account with passphrase(saved as secret) used earlier for encryption
           gpg -d --passphrase "${{ secrets.PLAY_SERVICE_ACCOUNT_DECRYPT_PASSPHRASE }}" --batch api-7730997362032805480-382486-3308f76b1b64.json.asc > config/api-7730997362032805480-382486-3308f76b1b64.json
+
+      # Setting up ruby on the machine
+      - name: Set up Ruby
+        id: set_up_ruby
+        uses: ruby/setup-ruby@v1.152.0
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+      # Generate cache key
+      - name: Generate cache key
+        id: generate_cache_key
+        run: bash ./checksum.sh checksum.txt
+      # Gradle cache
+      - name: Cache Gradle packages
+        id: cache_gradle_packages
+        uses: actions/cache@v2
+        continue-on-error: true
+        with:
+          path: |
+            ~/.gradle/caches/modules-*
+            ~/.gradle/caches/jars-*
+            ~/.gradle/caches/build-cache-*
+          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+          
       - name: Setup Java JDK
         uses: actions/setup-java@v3.12.0
         with:
           java-version: 17.0.6+10
           distribution: adopt
-      - name: Build with Gradle
-        run: ./gradlew build
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.3
-        with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
-    
+      # - name: Build with Gradle
+      #   run: ./gradlew build
+      # - name: Upload a Build Artifact
+      #   uses: actions/upload-artifact@v3.1.3
+      #   with:
+      #     name: app
+      #     path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Test fastlane
+        id: test_fastlane
+        run: fastlane run validate_play_store_json_key json_key:.\config\api-7730997362032805480-382486-3308f76b1b64.json
+      
