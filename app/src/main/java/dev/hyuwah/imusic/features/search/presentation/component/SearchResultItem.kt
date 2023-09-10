@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import dev.hyuwah.imusic.R
+import dev.hyuwah.imusic.core.utilities.DateTimeUtils.getYear
 import dev.hyuwah.imusic.features.search.domain.model.SearchModel
 import dev.hyuwah.imusic.ui.theme.IMusicTheme
 
@@ -44,6 +45,9 @@ fun SearchResultItem(
     isPlaying: Boolean,
     onClicked: () -> Unit
 ) {
+    val releaseYear by remember {
+        mutableStateOf(model.releaseDate.getYear())
+    }
     var elevation by remember { mutableStateOf(0.dp) }
     elevation = if (isPlaying) 6.dp else 0.dp
 
@@ -53,7 +57,7 @@ fun SearchResultItem(
         elevation = CardDefaults.outlinedCardElevation(
             defaultElevation = elevation
         ),
-        border = BorderStroke(1.dp, Color.LightGray),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary),
         onClick = {
             onClicked()
         }
@@ -88,7 +92,7 @@ fun SearchResultItem(
                     }
                 }
             }
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.SpaceAround
@@ -119,14 +123,15 @@ fun SearchResultItem(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = model.releaseDate,
+                    text = releaseYear,
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.Gray,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 6.dp)
+                        .padding(top = 6.dp, bottom = 6.dp)
                 )
             }
+            Spacer(modifier = Modifier.width(12.dp))
         }
     }
 }
