@@ -82,11 +82,12 @@ fun SearchResultItem(
                 if (isPlaying) {
                     Surface(
                         modifier = Modifier.size(100.dp),
-                        color = Color(0f,0f,0f, 0.5f)
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                     ) {
                         Icon(
                             modifier = Modifier.padding(12.dp),
                             imageVector = Icons.Rounded.PlayCircleOutline,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             contentDescription = null
                         )
                     }
@@ -94,20 +95,21 @@ fun SearchResultItem(
             }
             Spacer(modifier = Modifier.width(12.dp))
             Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.SpaceAround
+                modifier = Modifier.weight(1f, fill = true),
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
                     text = model.trackName,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 12.dp, bottom = 6.dp),
+                        .padding(top = 12.dp),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = model.artistName,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -116,7 +118,7 @@ fun SearchResultItem(
                 )
                 Text(
                     text = model.collectionName,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier
                         .fillMaxWidth(),
                     maxLines = 1,
@@ -124,11 +126,11 @@ fun SearchResultItem(
                 )
                 Text(
                     text = releaseYear,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = MaterialTheme.typography.labelMedium,
                     color = Color.Gray,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 6.dp, bottom = 6.dp)
+                        .padding(bottom = 6.dp)
                 )
             }
             Spacer(modifier = Modifier.width(12.dp))

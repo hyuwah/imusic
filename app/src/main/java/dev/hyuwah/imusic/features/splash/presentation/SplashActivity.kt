@@ -7,10 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,7 +37,9 @@ class SplashActivity : ComponentActivity() {
                 finish()
             }
             IMusicTheme {
-                Scaffold {
+                Scaffold(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ) {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -47,10 +50,11 @@ class SplashActivity : ComponentActivity() {
                         Image(
                             painter = painterResource(id = R.drawable.genres),
                             contentDescription = null,
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(100.dp),
                             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                         )
-                        Text(text = getString(R.string.app_name))
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(text = getString(R.string.app_name), style = MaterialTheme.typography.displayMedium)
                     }
                 }
 

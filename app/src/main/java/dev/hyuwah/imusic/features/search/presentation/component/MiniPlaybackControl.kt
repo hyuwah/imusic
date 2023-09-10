@@ -16,8 +16,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.MaterialTheme
@@ -63,6 +65,9 @@ fun MiniPlaybackControl(
     }
     Card(
         modifier = modifier,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        )
     ) {
         Row(
             modifier = Modifier
@@ -112,6 +117,9 @@ fun MiniPlaybackControl(
             }
             Spacer(modifier = Modifier.width(15.dp))
             FloatingActionButton(
+                elevation = FloatingActionButtonDefaults.loweredElevation(),
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 onClick = {
                     when (playerState) {
                         PlayerState.PLAYING -> onPauseClicked()
