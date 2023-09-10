@@ -1,5 +1,9 @@
 package dev.hyuwah.imusic.features.search.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class SearchModel(
     val artistId: Int,
     val artistName: String,
@@ -16,7 +20,7 @@ data class SearchModel(
     val trackTimeMillis: Int?,
     val trackViewUrl: String,
     val wrapperType: SearchWrapperType
-) {
+): Parcelable {
     companion object {
         fun default(): SearchModel {
             return SearchModel(

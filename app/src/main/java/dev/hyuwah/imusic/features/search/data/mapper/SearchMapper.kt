@@ -1,5 +1,6 @@
 package dev.hyuwah.imusic.features.search.data.mapper
 
+import androidx.media3.common.MediaItem
 import dev.hyuwah.imusic.features.search.data.remote.response.SearchResponse
 import dev.hyuwah.imusic.features.search.domain.model.SearchModel
 import dev.hyuwah.imusic.features.search.domain.model.SearchResultModel
@@ -30,4 +31,19 @@ fun SearchResponse.Result.toDomain(): SearchModel {
         trackViewUrl = trackViewUrl.orEmpty(),
         wrapperType = SearchWrapperType.parseFrom(wrapperType.orEmpty())
     )
+}
+
+fun MediaItem.toSearchModel(): SearchModel {
+    val modelFromExtras = mediaMetadata.extras?.run {
+        classLoader = SearchModel::class.java.classLoader
+        getParcelable(SearchModel::class.java.simpleName) as? SearchModel
+    }
+    val limitedModelFromMetadata = SearchModel.default().copy(
+        previewUrl = mediaId,
+        trackName = mediaMetadata.title.toString(),
+        artistName = mediaMetadata.artist.toString(),
+        collectionName = mediaMetadata.albumTitle.toString(),
+        artworkUrl100 = mediaMetadata.artworkUri.toString(),
+    )
+    return modelFromExtras ?: limitedModelFromMetadata
 }
