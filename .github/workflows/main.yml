@@ -30,27 +30,14 @@ jobs:
         with:
           ruby-version: '3.2'
           bundler-cache: true
-      # Generate cache key
-      - name: Generate cache key
-        id: generate_cache_key
-        run: bash ./checksum.sh checksum.txt
-      # Gradle cache
-      - name: Cache Gradle packages
-        id: cache_gradle_packages
-        uses: actions/cache@v2
-        continue-on-error: true
-        with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
           
       - name: Setup Java JDK
         uses: actions/setup-java@v3.12.0
         with:
           java-version: 17.0.6+10
           distribution: adopt
+          cache: gradle
+          
       # - name: Build with Gradle
       #   run: ./gradlew build
       # - name: Upload a Build Artifact
