@@ -76,6 +76,7 @@ class PlaybackControllerImpl(context: Context) : PlaybackController {
             )
             .build()
         mediaController?.run {
+            stop()
             setMediaItem(mediaItem, true)
             playWhenReady = true
             prepare()
