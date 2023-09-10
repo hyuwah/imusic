@@ -56,5 +56,10 @@ jobs:
         id: run_unit_tests
         run: |
           ./gradlew testDebugUnitTest
-        
+
+      - name: Upload to internal app sharing
+        id: internal_app_share
+        run: |
+          bundle exec fastlane upload_playstore_internal
+
       
