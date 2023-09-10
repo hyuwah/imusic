@@ -24,7 +24,8 @@ class SearchActivity: ComponentActivity() {
             IMusicTheme {
                 SearchScreen(
                     onEvent = viewModel::onEvent,
-                    state = viewModel.screenState
+                    screenState = viewModel.screenState,
+                    trackPlaybackState = viewModel.trackPlaybackState
                 )
             }
         }
@@ -32,6 +33,7 @@ class SearchActivity: ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.destroyMediaController()
         stopService(Intent(this, MediaPlaybackService::class.java))
     }
 

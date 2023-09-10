@@ -34,8 +34,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.hyuwah.imusic.core.common.domain.model.ErrorType
+import dev.hyuwah.imusic.features.search.domain.model.PlayerState
 import dev.hyuwah.imusic.features.search.domain.model.SearchModel
 import dev.hyuwah.imusic.features.search.domain.model.SearchResultModel
+import dev.hyuwah.imusic.features.search.domain.model.TrackPlaybackState
+import dev.hyuwah.imusic.features.search.presentation.component.MiniPlaybackControl
 import dev.hyuwah.imusic.features.search.presentation.component.SearchResultItem
 import dev.hyuwah.imusic.ui.theme.IMusicTheme
 
@@ -43,7 +46,8 @@ import dev.hyuwah.imusic.ui.theme.IMusicTheme
 @Composable
 fun SearchScreen(
     onEvent: (SearchScreenEvent) -> Unit,
-    state: SearchScreenState,
+    screenState: SearchScreenState,
+    trackPlaybackState: TrackPlaybackState,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -111,7 +115,7 @@ fun SearchScreen(
                 modifier = Modifier.weight(1f),
                 contentAlignment = Alignment.Center
             ) {
-                with(state) {
+                with(screenState) {
                     when {
                         isLoading == true -> {
                             CircularProgressIndicator(
@@ -129,7 +133,7 @@ fun SearchScreen(
                                         start = 16.dp,
                                         end = 16.dp,
                                         top = 16.dp,
-                                        bottom = 16.dp
+                                        bottom = 48.dp
                                     ),
                                     verticalArrangement = Arrangement.spacedBy(12.dp),
                                     modifier = Modifier.fillMaxSize()
@@ -140,7 +144,27 @@ fun SearchScreen(
                                             isPlaying = selectedTrack == model
                                         ) {
                                             onEvent(SearchScreenEvent.OnTrackSelected(model))
-                                            onEvent(SearchScreenEvent.PlayTrack)
+                                            if (model == screenState.selectedTrack && trackPlaybackState.playerState == PlayerState.PLAYING) {
+                                                onEvent(SearchScreenEvent.PauseTrack)
+                                            } else {
+                                                onEvent(SearchScreenEvent.PlayTrack(model))
+                                            }
+                                        }
+                                    }
+                                }
+
+                                with(trackPlaybackState) {
+                                    if (playerState != null && playerState != PlayerState.STOPPED) {
+                                        MiniPlaybackControl(
+                                            modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 12.dp, vertical = 16.dp),
+                                            track = currentTrack,
+                                            playerState = playerState,
+                                            seekbarPos = currentPosition,
+                                            seekbarDuration = totalDuration,
+                                            onSeekbarChanged = { onEvent(SearchScreenEvent.SeekTrackPosition(it)) },
+                                            onResumeClicked = { onEvent(SearchScreenEvent.ResumeTrack) },
+                                            onPauseClicked = { onEvent(SearchScreenEvent.PauseTrack) }) {
+                                            // [enhancement] Open Playback Control Detail
                                         }
                                     }
                                 }
@@ -183,7 +207,7 @@ fun previewSearchScreen() {
     IMusicTheme {
         SearchScreen(
             onEvent = {},
-            state = SearchScreenState(
+            screenState = SearchScreenState(
                 isLoading = false,
                 searchResult = SearchResultModel(
                     2,
@@ -204,7 +228,8 @@ fun previewSearchScreen() {
                         )
                     )
                 )
-            )
+            ),
+            trackPlaybackState = TrackPlaybackState()
         )
     }
 }
