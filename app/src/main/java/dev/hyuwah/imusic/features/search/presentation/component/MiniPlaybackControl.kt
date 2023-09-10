@@ -85,7 +85,7 @@ fun MiniPlaybackControl(
                         imageModel = {
                             artworkUrl100
                         },
-                        previewPlaceholder = R.drawable.ic_launcher_background,
+                        previewPlaceholder = R.drawable.genres,
                         imageOptions = ImageOptions(contentScale = ContentScale.FillBounds),
                     )
                     Spacer(modifier = Modifier.width(15.dp))
@@ -149,7 +149,7 @@ fun MiniPlaybackControl(
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.tertiaryContainer)
+                    .background(MaterialTheme.colorScheme.tertiaryContainer, shape = RoundedCornerShape(6.dp))
                     .border(
                         width = 1.dp,
                         color = MaterialTheme.colorScheme.tertiary,
