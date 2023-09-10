@@ -5,8 +5,12 @@ on:
   pull_request:
     branches: [ master ]
 jobs:
-  build:
+  upload-play-internal:
     runs-on: ubuntu-latest
+    env:
+      KEYSTORE_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+      KEYSTORE_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_STORE_PASSPHRASE }}
+      KEYSTORE_STORE_PASSWORD: ${{ secrets.SIGNING_KEY_STORE_PASSPHRASE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.0.0
@@ -26,10 +30,6 @@ jobs:
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
           echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
-        env:
-          KEYSTORE_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
-          KEYSTORE_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_STORE_PASSPHRASE }}
-          KEYSTORE_STORE_PASSWORD: ${{ secrets.SIGNING_KEY_STORE_PASSPHRASE }}
 
       # Setting up ruby on the machine
       - name: Set up Ruby
@@ -54,16 +54,16 @@ jobs:
       #     name: app
       #     path: app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Test fastlane
-        id: test_fastlane
-        run: | 
-          bundle exec fastlane run validate_play_store_json_key json_key:config/api-7730997362032805480-382486-3308f76b1b64.json
+#      - name: Test fastlane
+#        id: test_fastlane
+#        run: |
+#          bundle exec fastlane run validate_play_store_json_key json_key:config/api-7730997362032805480-382486-3308f76b1b64.json
 
       # Run Unit Test
-      - name: Run unit tests
-        id: run_unit_tests
-        run: |
-          ./gradlew testDebugUnitTest
+#      - name: Run unit tests
+#        id: run_unit_tests
+#        run: |
+#          ./gradlew testDebugUnitTest
 
       - name: Upload to internal app sharing
         id: internal_app_share

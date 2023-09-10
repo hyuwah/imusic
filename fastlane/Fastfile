@@ -38,8 +38,15 @@ platform :android do
 
   lane :upload_playstore_internal do
     gradle(
-      task: 'assemble',
-      build_type: 'Release'
+      task: 'bundle',
+      build_type: 'Release',
+      print_command: true,
+      properties: {
+        "android.injected.signing.store.file" => "config/release_keystore.jks",
+        "android.injected.signing.store.password" => KEYSTORE_STORE_PASSWORD,
+        "android.injected.signing.key.alias" => KEYSTORE_KEY_ALIAS,
+        "android.injected.signing.key.password" => KEYSTORE_KEY_PASSWORD,
+      }
     )
     upload_to_play_store_internal_app_sharing(aab: 'app-release.aab')
   end
