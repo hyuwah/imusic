@@ -22,6 +22,14 @@ jobs:
           echo "${{ secrets.PLAY_SERVICE_ACCOUNT}}" > api-7730997362032805480-382486-3308f76b1b64.json.asc
           # Decrypting play service account with passphrase(saved as secret) used earlier for encryption
           gpg -d --passphrase "${{ secrets.PLAY_SERVICE_ACCOUNT_DECRYPT_PASSPHRASE }}" --batch api-7730997362032805480-382486-3308f76b1b64.json.asc > config/api-7730997362032805480-382486-3308f76b1b64.json
+          echo "storeFile=config/release_keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
+        env:
+          KEYSTORE_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_STORE_PASSPHRASE }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.SIGNING_KEY_STORE_PASSPHRASE }}
 
       # Setting up ruby on the machine
       - name: Set up Ruby
