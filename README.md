@@ -46,7 +46,7 @@ There are only 2 unit test as of now:
 
 ## CI/CD
 
-- The project is hosted on github as private project
+- The project is hosted on github as **PRIVATE project**
 - I use github actions + fastlane for CI & CD pipeline
 - The pipeline is very rudimentary as it's my very first time implementing it from scratch with github actions & fastlane
   - The steps that has been implemented are: Unit Test, Build App & Upload Artifact to github project repo
@@ -54,8 +54,8 @@ There are only 2 unit test as of now:
 
 ## Publishing
 
-- The app is published to Google Play Console / Store but still on internal test track which require user to be invited / registered as tester to download the app.
-- I could promote it to beta track but it certainly require some time for the app to be reviewed and fully available in play store
+- The app is published to Google Play Console / Store but **still on internal test track** which require user to be **invited / registered as tester to download the app.**
+- I'm still in the process to promote it to beta track but it certainly **require some time for the app to be reviewed and fully available** in play store
 
 ## Notes
 
