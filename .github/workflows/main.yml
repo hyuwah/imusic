@@ -58,7 +58,16 @@ jobs:
       #   with:
       #     name: app
       #     path: app/build/outputs/apk/debug/app-debug.apk
+
       - name: Test fastlane
         id: test_fastlane
-        run: fastlane run validate_play_store_json_key json_key:.\config\api-7730997362032805480-382486-3308f76b1b64.json
+        run: | 
+          bundle exec fastlane run validate_play_store_json_key json_key:.\config\api-7730997362032805480-382486-3308f76b1b64.json
+
+      # Run Unit Test
+      - name: Run unit tests
+        id: run_unit_tests
+        run: |
+          ./gradlew testDebugUnitTest
+        
       
