@@ -2,6 +2,7 @@ package dev.hyuwah.imusic.features.search.presentation.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,14 +10,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.PlayCircleOutline
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,17 +45,23 @@ fun SearchResultItem(
     isPlaying: Boolean,
     onClicked: () -> Unit
 ) {
-    val elevation = if (isPlaying) {
-        CardDefaults.outlinedCardElevation()
-    } else {
-        CardDefaults.outlinedCardElevation(
-            defaultElevation = 6.dp
-        )
+    var elevation by remember { mutableStateOf(0.dp) }
+    val playingImageTint by remember {
+      mutableStateOf(ColorFilter.colorMatrix(
+          ColorMatrix().apply {
+              setToScale(0.5f, 0.5f, 0.5f, 1f)
+          }
+      ))
     }
+
+    elevation = if (isPlaying) 6.dp else 0.dp
+
     OutlinedCard(
         modifier = Modifier
             .fillMaxWidth(),
-        elevation = elevation,
+        elevation = CardDefaults.outlinedCardElevation(
+            defaultElevation = elevation
+        ),
         border = BorderStroke(1.dp, Color.LightGray),
         onClick = {
             onClicked()
@@ -53,14 +70,29 @@ fun SearchResultItem(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            CoilImage(
+            Box(
                 modifier = Modifier.size(100.dp),
-                imageModel = {
-                    model.artworkUrl100
-                },
-                imageOptions = ImageOptions(contentScale = ContentScale.FillBounds),
-                previewPlaceholder = R.drawable.genres
-            )
+                contentAlignment = Alignment.Center
+            ) {
+                CoilImage(
+                    modifier = Modifier.size(100.dp),
+                    imageModel = {
+                        model.artworkUrl100
+                    },
+                    imageOptions = ImageOptions(
+                        contentScale = ContentScale.FillBounds,
+                        colorFilter = if (isPlaying) playingImageTint else null
+                    ),
+                    previewPlaceholder = R.drawable.genres
+                )
+                if (isPlaying) {
+                    Icon(
+                        modifier = Modifier.size(36.dp),
+                        imageVector = Icons.Rounded.PlayCircleOutline,
+                        contentDescription = null
+                    )
+                }
+            }
             Spacer(modifier = Modifier.width(6.dp))
             Column(
                 modifier = Modifier.weight(1f),
