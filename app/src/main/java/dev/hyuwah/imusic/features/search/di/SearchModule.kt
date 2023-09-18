@@ -9,7 +9,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import dev.hyuwah.imusic.core.common.di.CommonProviderModule
-import dev.hyuwah.imusic.features.search.data.remote.response.ITunesSearchService
+import dev.hyuwah.imusic.features.search.data.remote.ITunesSearchService
 import dev.hyuwah.imusic.features.search.data.repository.SearchRepositoryImpl
 import dev.hyuwah.imusic.features.search.data.controller.PlaybackControllerImpl
 import dev.hyuwah.imusic.features.search.domain.repository.SearchRepository

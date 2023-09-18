@@ -4,7 +4,7 @@ import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.StatusCode
 import dev.hyuwah.imusic.core.common.domain.model.AsyncResult
 import dev.hyuwah.imusic.core.common.domain.model.ErrorType
-import dev.hyuwah.imusic.features.search.data.remote.response.ITunesSearchService
+import dev.hyuwah.imusic.features.search.data.remote.ITunesSearchService
 import dev.hyuwah.imusic.features.search.data.remote.response.SearchResponse
 import dev.hyuwah.imusic.features.search.data.repository.SearchRepositoryImpl
 import dev.hyuwah.imusic.features.search.domain.model.SearchMedia
