@@ -50,8 +50,6 @@ platform :android do
     )
     upload_to_play_store_internal_app_sharing(
         root_url: "https://androidpublisher.googleapis.com/",
-        skip_upload_images: true,
-        skip_upload_screenshots: true,
         aab: '/home/runner/work/imusic/imusic/app/build/outputs/bundle/release/app-release.aab'
     )
   end
