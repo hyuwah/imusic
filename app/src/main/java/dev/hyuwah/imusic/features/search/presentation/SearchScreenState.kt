@@ -7,6 +7,7 @@ import dev.hyuwah.imusic.features.search.domain.model.SearchResultModel
 data class SearchScreenState(
     val isLoading: Boolean? = null,
     val searchResult: SearchResultModel? = null,
+    val searchHistories: List<String> = listOf(),
     val selectedTrack: SearchModel? = null,
     val searchError: ErrorType? = null
 )

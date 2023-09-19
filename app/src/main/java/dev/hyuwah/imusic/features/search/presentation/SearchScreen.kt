@@ -40,6 +40,7 @@ import dev.hyuwah.imusic.features.search.domain.model.SearchModel
 import dev.hyuwah.imusic.features.search.domain.model.SearchResultModel
 import dev.hyuwah.imusic.features.search.domain.model.TrackPlaybackState
 import dev.hyuwah.imusic.features.search.presentation.component.MiniPlaybackControl
+import dev.hyuwah.imusic.features.search.presentation.component.RecentSearchQueries
 import dev.hyuwah.imusic.features.search.presentation.component.SearchResultItem
 import dev.hyuwah.imusic.ui.theme.IMusicTheme
 
@@ -72,12 +73,12 @@ fun SearchScreen(
                     searchQuery = it
                 },
                 onSearch = {
-                    active = false
                     if (searchQuery.isNotBlank()) {
-                        onEvent(SearchScreenEvent.Search(it))
+                        onEvent(SearchScreenEvent.Search(it.trim()))
                     } else {
                         searchQuery = ""
                     }
+                    active = false
                 },
                 active = active,
                 onActiveChange = {
@@ -111,7 +112,26 @@ fun SearchScreen(
                     .fillMaxWidth()
                     .padding(12.dp)
             ) {
-
+                RecentSearchQueries(
+                    searchHistories = screenState.searchHistories,
+                    onItemClick = { query ->
+                        if (query != searchQuery) {
+                            searchQuery = query
+                            if (searchQuery.isNotBlank()) {
+                                onEvent(SearchScreenEvent.Search(query))
+                            } else {
+                                searchQuery = ""
+                            }
+                        }
+                        active = false
+                    },
+                    onClearAll = {
+                        onEvent(SearchScreenEvent.ClearRecentSearch)
+                    },
+                    onRemoveItem = { query ->
+                        onEvent(SearchScreenEvent.RemoveRecentSearch(query))
+                    },
+                )
             }
             Box(
                 modifier = Modifier.weight(1f),
@@ -154,22 +174,6 @@ fun SearchScreen(
                                         }
                                     }
                                 }
-
-                                with(trackPlaybackState) {
-                                    if (playerState != null && playerState != PlayerState.STOPPED) {
-                                        MiniPlaybackControl(
-                                            modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 12.dp, vertical = 16.dp),
-                                            track = currentTrack,
-                                            playerState = playerState,
-                                            seekbarPos = currentPosition,
-                                            seekbarDuration = totalDuration,
-                                            onSeekbarChanged = { onEvent(SearchScreenEvent.SeekTrackPosition(it)) },
-                                            onResumeClicked = { onEvent(SearchScreenEvent.ResumeTrack) },
-                                            onPauseClicked = { onEvent(SearchScreenEvent.PauseTrack) }) {
-                                            // [enhancement] Open Playback Control Detail
-                                        }
-                                    }
-                                }
                             } else {
                                 Text(
                                     text = "No result found for \"$searchQuery\"",
@@ -193,6 +197,24 @@ fun SearchScreen(
                                     }
                                 )
                             }
+                        }
+                    }
+                }
+
+                with(trackPlaybackState) {
+                    if (playerState != null && playerState != PlayerState.STOPPED) {
+                        MiniPlaybackControl(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(horizontal = 12.dp, vertical = 16.dp),
+                            track = currentTrack,
+                            playerState = playerState,
+                            seekbarPos = currentPosition,
+                            seekbarDuration = totalDuration,
+                            onSeekbarChanged = { onEvent(SearchScreenEvent.SeekTrackPosition(it)) },
+                            onResumeClicked = { onEvent(SearchScreenEvent.ResumeTrack) },
+                            onPauseClicked = { onEvent(SearchScreenEvent.PauseTrack) }) {
+                            // [enhancement] Open Playback Control Detail
                         }
                     }
                 }

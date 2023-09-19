@@ -38,6 +38,19 @@ class SearchViewModel @Inject constructor(
         when (event) {
             is SearchScreenEvent.Search -> {
                 search(event.query)
+                addQueryToRecentSearch(event.query)
+            }
+            is SearchScreenEvent.RemoveRecentSearch -> {
+                val recentQuery = screenState.searchHistories.toMutableList()
+                recentQuery.remove(event.query)
+                screenState = screenState.copy(
+                    searchHistories = recentQuery
+                )
+            }
+            SearchScreenEvent.ClearRecentSearch -> {
+                screenState = screenState.copy(
+                    searchHistories = emptyList()
+                )
             }
             is SearchScreenEvent.OnTrackSelected -> {
                 screenState = screenState.copy(selectedTrack = event.selectedTrack)
@@ -78,6 +91,20 @@ class SearchViewModel @Inject constructor(
                     screenState.copy(isLoading = false, searchResult = result.data)
                 }
             }
+        }
+    }
+
+    private fun addQueryToRecentSearch(query: String) {
+        viewModelScope.launch {
+            delay(200)
+            val newHistories = screenState.searchHistories.toMutableList()
+            if (screenState.searchHistories.contains(query)) {
+                newHistories.remove(query)
+            }
+            newHistories.add(0, query)
+            screenState = screenState.copy(
+                searchHistories = newHistories
+            )
         }
     }
 

@@ -9,4 +9,6 @@ sealed interface SearchScreenEvent {
     data class SeekTrackPosition(val pos: Long): SearchScreenEvent
     data class OnTrackSelected(val selectedTrack: SearchModel) : SearchScreenEvent
     data class Search(val query: String) : SearchScreenEvent
+    data class RemoveRecentSearch(val query: String) : SearchScreenEvent
+    data object ClearRecentSearch : SearchScreenEvent
 }
