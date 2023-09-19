@@ -86,6 +86,9 @@ dependencies {
 
     debugImplementation(libs.bundles.debug.compose)
 
+    debugImplementation(libs.chucker)
+    releaseImplementation(libs.chucker.noop)
+
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.test.ext.junit)

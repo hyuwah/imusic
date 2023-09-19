@@ -1,5 +1,7 @@
 package dev.hyuwah.imusic.core.common.di
 
+import android.app.Application
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -21,13 +23,14 @@ class CommonProviderModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(app: Application): OkHttpClient {
         return OkHttpClient.Builder().apply {
             if (BuildConfig.DEBUG) {
                 addInterceptor(HttpLoggingInterceptor().apply {
                     setLevel(HttpLoggingInterceptor.Level.BODY)
                 })
             }
+            addInterceptor(ChuckerInterceptor(app.applicationContext))
         }.build()
     }
 
