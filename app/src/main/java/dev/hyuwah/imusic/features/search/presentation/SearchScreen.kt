@@ -40,6 +40,7 @@ import dev.hyuwah.imusic.features.search.domain.model.SearchModel
 import dev.hyuwah.imusic.features.search.domain.model.SearchResultModel
 import dev.hyuwah.imusic.features.search.domain.model.TrackPlaybackState
 import dev.hyuwah.imusic.features.search.presentation.component.MiniPlaybackControl
+import dev.hyuwah.imusic.features.search.presentation.component.RecentSearchQueries
 import dev.hyuwah.imusic.features.search.presentation.component.SearchResultItem
 import dev.hyuwah.imusic.ui.theme.IMusicTheme
 
@@ -72,12 +73,12 @@ fun SearchScreen(
                     searchQuery = it
                 },
                 onSearch = {
-                    active = false
                     if (searchQuery.isNotBlank()) {
                         onEvent(SearchScreenEvent.Search(it))
                     } else {
                         searchQuery = ""
                     }
+                    active = false
                 },
                 active = active,
                 onActiveChange = {
@@ -111,7 +112,26 @@ fun SearchScreen(
                     .fillMaxWidth()
                     .padding(12.dp)
             ) {
-
+                RecentSearchQueries(
+                    searchHistories = screenState.searchHistories,
+                    onItemClick = { query ->
+                        if (query != searchQuery) {
+                            searchQuery = query
+                            if (searchQuery.isNotBlank()) {
+                                onEvent(SearchScreenEvent.Search(query))
+                            } else {
+                                searchQuery = ""
+                            }
+                        }
+                        active = false
+                    },
+                    onClearAll = {
+                        onEvent(SearchScreenEvent.ClearRecentSearch)
+                    },
+                    onRemoveItem = { query ->
+                        onEvent(SearchScreenEvent.RemoveRecentSearch(query))
+                    },
+                )
             }
             Box(
                 modifier = Modifier.weight(1f),
