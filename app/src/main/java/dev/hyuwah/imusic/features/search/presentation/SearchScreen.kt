@@ -154,22 +154,6 @@ fun SearchScreen(
                                         }
                                     }
                                 }
-
-                                with(trackPlaybackState) {
-                                    if (playerState != null && playerState != PlayerState.STOPPED) {
-                                        MiniPlaybackControl(
-                                            modifier = Modifier.align(Alignment.BottomCenter).padding(horizontal = 12.dp, vertical = 16.dp),
-                                            track = currentTrack,
-                                            playerState = playerState,
-                                            seekbarPos = currentPosition,
-                                            seekbarDuration = totalDuration,
-                                            onSeekbarChanged = { onEvent(SearchScreenEvent.SeekTrackPosition(it)) },
-                                            onResumeClicked = { onEvent(SearchScreenEvent.ResumeTrack) },
-                                            onPauseClicked = { onEvent(SearchScreenEvent.PauseTrack) }) {
-                                            // [enhancement] Open Playback Control Detail
-                                        }
-                                    }
-                                }
                             } else {
                                 Text(
                                     text = "No result found for \"$searchQuery\"",
@@ -193,6 +177,24 @@ fun SearchScreen(
                                     }
                                 )
                             }
+                        }
+                    }
+                }
+
+                with(trackPlaybackState) {
+                    if (playerState != null && playerState != PlayerState.STOPPED) {
+                        MiniPlaybackControl(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(horizontal = 12.dp, vertical = 16.dp),
+                            track = currentTrack,
+                            playerState = playerState,
+                            seekbarPos = currentPosition,
+                            seekbarDuration = totalDuration,
+                            onSeekbarChanged = { onEvent(SearchScreenEvent.SeekTrackPosition(it)) },
+                            onResumeClicked = { onEvent(SearchScreenEvent.ResumeTrack) },
+                            onPauseClicked = { onEvent(SearchScreenEvent.PauseTrack) }) {
+                            // [enhancement] Open Playback Control Detail
                         }
                     }
                 }
