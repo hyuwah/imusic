@@ -33,11 +33,21 @@ fun RecentSearchQueries(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 8.dp)
         ) {
-            Text(text = "Recent Search", style = MaterialTheme.typography.titleSmall)
+            Text(
+                text = "Recent Search",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
             IconButton(onClick = { onClearAll() }) {
-                Icon(imageVector = Icons.Default.DeleteSweep, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.DeleteSweep,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
         LazyColumn {

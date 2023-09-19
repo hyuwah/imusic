@@ -74,7 +74,7 @@ fun SearchScreen(
                 },
                 onSearch = {
                     if (searchQuery.isNotBlank()) {
-                        onEvent(SearchScreenEvent.Search(it))
+                        onEvent(SearchScreenEvent.Search(it.trim()))
                     } else {
                         searchQuery = ""
                     }
