@@ -4,13 +4,19 @@ This is a simple Android music player app that uses the **iTunes API** to search
 
 ## App Features
 
-| Demo                                                                                                 | Theme Switch                                                                                                         |
-|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| ![Demo](https://res.cloudinary.com/hyuwah-github-io/video/upload/v1695767662/iMusic/imusic-demo.mp4) | ![Theme Switch](https://res.cloudinary.com/hyuwah-github-io/video/upload/v1695767664/iMusic/imusic-switch-theme.mp4) |
-
 - Search functionality, to search song by artist / song / album name
 - The songs result can be played / previewed (30s)
 - Support dynamic theme on Android 12+ & Light / Dark Mode
+
+## Preview
+
+**Demo**
+
+https://github.com/hyuwah/imusic/assets/5181388/57c7edb3-a4da-4737-b027-707f0ca6a9b0
+
+**Theme Switch**
+
+https://github.com/hyuwah/imusic/assets/5181388/7b65eb38-3d70-44f8-9e5e-e0b26805bec8
 
 ## Tech Stack
 
