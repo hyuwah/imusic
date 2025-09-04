@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 jobs:
   deploy-internal:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       KEYSTORE_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
       KEYSTORE_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_STORE_PASSPHRASE }}
