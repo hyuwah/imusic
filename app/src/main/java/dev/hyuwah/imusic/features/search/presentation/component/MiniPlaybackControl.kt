@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -85,7 +86,7 @@ fun MiniPlaybackControl(
                         imageModel = {
                             artworkUrl100
                         },
-                        previewPlaceholder = R.drawable.genres,
+                        previewPlaceholder = painterResource( R.drawable.genres),
                         imageOptions = ImageOptions(contentScale = ContentScale.FillBounds),
                     )
                     Spacer(modifier = Modifier.width(15.dp))
